@@ -1,0 +1,35 @@
+# 开启debug模式
+debug: true
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: StillWantEat
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/yourdb?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: yourname
+    password: pwd
+      # 热部署配置
+  devtools:
+    restart:
+      enabled: true
+  freemarker:
+    cache: false
+
+mybatis-plus:
+  configuration:
+    #按照驼峰命名法映射实体或者属性
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 全局配置
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+
+# 文件上传保存路径
+stillwanteat:
+  uploadPath: D:\img\
