@@ -1,5 +1,6 @@
 ## 项目基本信息
 - 项目名称：StillWantEat
+- 版本号： 1.6.3
 - 业务描述： 外卖订餐后端管理与前端用户订餐（前后端未分离）
 - 技术选型 
     - 后端： springboot + mybatis-plus + lombok
