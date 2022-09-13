@@ -5,7 +5,6 @@
     - 后端： springboot + mybatis-plus + lombok
     - 前端： vue
     - 持久化： mysql + (redis后续2.0版本)
-- 项目访问地址：https://github.com/Huijixu/StillWantEat1.6.3
 - 本地后端登录测试地址： http://localhost:8080/backend/page/login/login.html
 - 本地前端登录测试地址： http://localhost:8080/front/page/login.html
 - 项目管理员登录：
