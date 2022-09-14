@@ -20,6 +20,13 @@ spring:
   freemarker:
     cache: false
 
+    # redis
+  redis:
+    host: 192.168.253.129
+    port: 6379
+
+    database: 0
+
 mybatis-plus:
   configuration:
     #按照驼峰命名法映射实体或者属性
@@ -33,3 +40,4 @@ mybatis-plus:
 # 文件上传保存路径
 stillwanteat:
   uploadPath: D:\img\
+
