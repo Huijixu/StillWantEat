@@ -9,8 +9,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.huijixu</groupId>
-    <artifactId>StillWantEat-V1.6.3</artifactId>
-    <version>1.6.3</version>
+    <artifactId>StillWantEat</artifactId>
+    <version>2.0</version>
 
     <packaging>war</packaging>
     <name>StillWantEat</name>
