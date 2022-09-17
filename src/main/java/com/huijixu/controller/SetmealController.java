@@ -12,6 +12,8 @@ import com.huijixu.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +31,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/setmeal")
 @Slf4j
+
 public class SetmealController {
 
     @Autowired
@@ -46,6 +49,11 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/list")
+    /**
+     * value: redis 缓存分类名称
+     * key  :  redis 缓存数据的索引
+     */
+    @Cacheable(value = "setMealCache",key = "#setmeal.categoryId + '_' + #setmeal.status")
     public R<List<Setmeal>> list(
 
                     Setmeal setmeal){
@@ -82,6 +90,7 @@ public class SetmealController {
      * @param ids
      * @return
      */
+    @CacheEvict(value = "setMealCache",allEntries = true)   // 发送delete请求则清空redis
     @DeleteMapping
     public R<String> delete(
             @RequestParam
@@ -145,6 +154,7 @@ public class SetmealController {
      * @return
      */
     @PostMapping
+    @CacheEvict(value = "setMealCache",allEntries = true)
     public R<String> save(@RequestBody SetmealDto setmealDto) {
         log.info("套餐信息：{}", setmealDto);
 

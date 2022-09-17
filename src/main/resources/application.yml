@@ -27,6 +27,11 @@ spring:
 
     database: 1
 
+  # cache
+  cache:
+    redis:
+      time-to-live: 180000  # 缓存过期时间 30min
+
 mybatis-plus:
   configuration:
     #按照驼峰命名法映射实体或者属性

@@ -84,6 +84,7 @@ public class DishController {
 
         List<DishDto> dishDtoList = null;
 
+        //此key为redis中的索引key
          String key  = "dish_" + dish.getCategoryId() + "_" + dish.getStatus();
 
          /*

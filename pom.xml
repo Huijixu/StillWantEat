@@ -27,6 +27,13 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
+        <!--Spring-Cache 框架
+            用注解的方式使用RedisTemplate-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
         <!--阿里云短信服务-->
         <dependency>
             <groupId>com.aliyun</groupId>
