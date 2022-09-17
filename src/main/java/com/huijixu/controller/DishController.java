@@ -15,11 +15,11 @@ import com.huijixu.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.support.SimpleTriggerContext;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/dish")
 @Slf4j
+@SuppressWarnings({"all"})
 
 public class DishController {
 
@@ -40,6 +41,9 @@ public class DishController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 单个菜品起售停售   0: 停售；1：起售
@@ -65,11 +69,41 @@ public class DishController {
 
     /**
      *  dish展示
+     *  使用redis 缓存
      * @param dish
      * @return
      */
     @GetMapping("/list")
     public R<List<DishDto>> list(DishDto dish   ) {
+
+        /**
+        构造动态key 从redis 中查询 数据，数据在redis 中设计为按照 菜品分类存贮
+        所以key要做成自动拼接的dishId + status
+        说白就是拼接一个url类型的get请求
+         */
+
+        List<DishDto> dishDtoList = null;
+
+         String key  = "dish_" + dish.getCategoryId() + "_" + dish.getStatus();
+
+         /*
+         1
+         从redis中查询数据
+          */
+        dishDtoList = (List<DishDto>) redisTemplate.opsForValue().get(key);
+
+        /*
+         1.1
+         查到直接返回
+         */
+        if (dishDtoList  != null ){
+            return  R.success(dishDtoList);
+        }
+
+        /*
+         2
+         redis中查不到 进入数据库
+          */
         //构造查询条件
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(dish.getCategoryId() != null, Dish::getCategoryId, dish.getCategoryId());
@@ -84,7 +118,7 @@ public class DishController {
         /**
          * 查询口味信息
          */
-        List<DishDto> dishDtoList = list.stream().map((item) -> {
+         dishDtoList = list.stream().map((item) -> {
             DishDto dishDto = new DishDto();
 
             BeanUtils.copyProperties(item,dishDto);
@@ -108,7 +142,12 @@ public class DishController {
             return dishDto;
         }).collect(Collectors.toList());
 
-        return R.success(dishDtoList);
+         /*
+         2.1
+        将数据库库中查到的数据存入redis
+          */
+        redisTemplate.opsForValue().set(key,dishDtoList,30, TimeUnit.MINUTES);
+         return R.success(dishDtoList);
     }
 
     /**
