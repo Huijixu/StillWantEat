@@ -45,3 +45,6 @@
 - 如要使用短信验证码功能，请到阿里云申请该服务，并将数字签名验证码等参数填入java/com.huijixu/controller/UserController的SMSUtils.sendMessage中)
 - 数据库密码/数据库名/时区等自行修改
 - 图片资源保存目录请在application.yml中修改
+
+##  其他信息
+- 项目前端资源来自国内hm机构
